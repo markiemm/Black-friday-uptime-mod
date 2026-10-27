@@ -1,0 +1,25 @@
+{
+  "panels": [
+    {
+      "id": "countdown_hud",
+      "title": "Black Friday Countdown",
+      "point": "hud",
+      "widgets": [
+        { "id": "time_left", "label": "Time to incident window", "kind": "stat_tile" },
+        { "id": "upgrade", "label": "Readiness", "kind": "text" }
+      ]
+    },
+    {
+      "id": "black_friday_board",
+      "title": "Black Friday Readiness",
+      "point": "dashboard",
+      "key": "F6",
+      "widgets": [
+        { "id": "countdown", "label": "Time until incident window", "kind": "stat_tile" },
+        { "id": "hosts", "label": "Hosts online / present", "kind": "stat_tile" },
+        { "id": "customers", "label": "Customers", "kind": "stat_tile" },
+        { "id": "readiness", "label": "Upgrade checklist", "kind": "text" }
+      ]
+    }
+  ]
+}

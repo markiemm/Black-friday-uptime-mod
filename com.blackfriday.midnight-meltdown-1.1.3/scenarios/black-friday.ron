@@ -1,0 +1,57 @@
+// Black Friday: Midnight Meltdown — garage start, minimum viable capacity.
+// The player has 72 in-game hours to upgrade before the scheduled incident window.
+ScenarioFile(
+    id: "com.blackfriday.midnight-meltdown:black-friday",
+    released: true,
+    title: "Black Friday: Midnight Meltdown",
+    description: "Start at the built-in garage site with a bare-minimum network. You have three in-game days to add capacity and resilience before the Black Friday incident window. Upgrade before the countdown reaches zero, then keep customers online through the crisis.",
+    difficulty: Some(Standard),
+    coop: false,
+    starting_site: Some("garage"),
+    include_standard_sites: true,
+    starting_cash_dollars: 250000.0,
+    config: (
+        tuning: (),
+    ),
+    pre_built: [
+        Edd(sku: "Residential ONT", uplinks: ["Consumer Fibre"]),
+        Rack(
+            hosts: [("Compute 1U", 2)],
+            switches: ["16-port Access GbE"],
+            wire_hosts: true,
+        ),
+    ],
+    include_milestone1_customers: true,
+    archetype_pack: Some("canon"),
+    macro_event_pool: MacroEventPool(
+        enabled: true,
+        eligible_kinds: [SubmarineCableCut],
+        event_count_range: (1, 1),
+        duration_hours_range: (12, 48),
+        start_offset_days: 3,
+        end_offset_days: 8,
+        min_spacing_days: 2,
+    ),
+    scripted_events: [
+        MacroEvent(
+            at_secs: 259200,
+            duration_hours: 18,
+            kind: RegionalPowerCrisis,
+        ),
+    ],
+    rules: (
+        wins: [
+            SustainedFor(
+                inner: CustomerCountAtLeast(4),
+                duration: (604800000000000),
+            ),
+        ],
+        loses: [Bankruptcy],
+        triggers: [
+            (OnGameStart, Log("BLACK FRIDAY: 72-hour preparation window. Upgrade hosts and network capacity before the incident window.")),
+            (OnSimTime(SimTime(172800000000000)), Log("BLACK FRIDAY: 24 HOURS LEFT. Check host capacity, gateways, switching and cash reserves.")),
+            (OnSimTime(SimTime(259200000000000)), Log("BLACK FRIDAY: THE INCIDENT WINDOW HAS ARRIVED. Keep services online and protect customers.")),
+        ],
+    ),
+    include_standard_triggers: true,
+)
